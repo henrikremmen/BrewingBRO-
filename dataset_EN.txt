@@ -1,0 +1,86 @@
+# dataset dataset_EN.txt
+# barley	hops	maltextracts	maltprocess	malts	mashingprocess	yeasts
+
+# barley
+# name	EBC	cost	quality
+barley01	65.0	0.101	3
+barley02	124.0	0.11	3
+barley03	116.0	0.107	5
+barley04	26.0	0.071	1
+barley05	48.0	0.117	4
+barley06	8.0	0.115	4
+barley07	13.0	0.093	3
+barley08	38.0	0.097	2
+barley09	12.0	0.071	1
+barley10	114.0	0.084	2
+barley11	10.0	0.108	4
+barley12	9.0	0.11	4
+
+# hops
+# name	cost	quality
+hop01	47.1	4
+hop02	34.4	1
+hop03	45.2	3
+hop04	49.1	4
+hop05	43.3	2
+hop06	46.2	3
+hop07	33.9	1
+hop08	39.8	2
+hop09	34.7	1
+hop10	47.2	5
+hop11	37.3	1
+hop12	40.2	2
+
+# maltextracts
+# name	EBC	cost	quality
+maltextract01	72.0	9.57	3
+maltextract02	66.0	8.32	1
+maltextract03	95.0	10.39	5
+maltextract04	125.0	8.11	1
+maltextract05	17.0	8.27	1
+maltextract06	115.0	9.83	4
+maltextract07	117.0	9.02	2
+maltextract08	16.0	9.64	3
+maltextract09	10.0	8.95	3
+maltextract10	9.0	8.23	1
+maltextract11	148.0	10.07	3
+maltextract12	7.0	8.48	2
+
+# maltprocess
+# name	fixedcost	variabelcost
+malt proces	2410.0	0.39
+
+# malts
+# name	EBC	cost	quality
+malt01	134.0	2.83	3
+malt02	15.0	3.07	3
+malt03	10.0	2.43	3
+malt04	7.0	2.17	2
+malt05	41.0	2.36	2
+malt06	53.0	2.0	1
+malt07	16.0	2.41	1
+malt08	28.0	2.98	4
+malt09	28.0	2.38	1
+malt10	7.0	2.85	4
+malt11	6.0	3.17	5
+malt12	91.0	2.9	4
+
+# mashingprocess
+# name	fixedcost	variabelekost
+mashingprocess	1072.0	0.94
+
+# yeasts
+# name	cost	quality
+yeast01	98.8	5
+yeast02	88.8	3
+yeast03	85.0	3
+yeast04	80.2	1
+yeast05	72.7	1
+yeast06	78.2	2
+yeast07	93.5	3
+yeast08	96.0	4
+yeast09	80.8	2
+yeast10	93.6	4
+yeast11	93.2	4
+yeast12	90.8	3
+
