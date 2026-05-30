@@ -1,5 +1,0 @@
-\section{Conclusion}
-\label{sec:conclusion}
-The Brewery Plat-Eau tasks are solved with one common linear optimisation model and task-specific parameter choices. Fixed malting and mashing costs are represented with two binary variables. The LP relaxation gives a lower bound, while brute-force enumeration over the valid binary process choices gives the original MILP solution using only \texttt{scipy.optimize.linprog}.
-
-The results show how volume, colour, and quality constraints change the cheapest production plan. Fixed process costs explain why small batches are more expensive per litre, and the EBC and quality constraints explain why some colours or ingredient mixes cost more than others.
