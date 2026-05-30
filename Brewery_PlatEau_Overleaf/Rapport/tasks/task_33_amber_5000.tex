@@ -1,0 +1,118 @@
+\section{Task 3: 5000 Litre Amber Beer}
+\label{sec:task3}
+
+\subsection{Problem Setup}
+\label{sec:task3-setup}
+The requested production volume is 5000 L. The beer colour is amber, so the EBC bounds are
+\[
+20 \leq \EBC \leq 29.
+\]
+No quality constraints are imposed in this task.
+
+\begin{table}[!t]
+\renewcommand{\arraystretch}{1.15}
+\caption{Task 3 Problem Setup}
+\label{tab:task33-setup}
+\centering
+\small
+\begin{tabular}{@{}ll@{}}
+\toprule
+Parameter & Value \\
+\midrule
+Beer volume & 5000 L \\
+Colour & amber \\
+EBC bounds & 20 to 29 \\
+Quality constraints & not active \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{LP Relaxation Result}
+\label{sec:task3-relaxation}
+The LP relaxation gives a cost of 4497.687. In this case the relaxed process variables are already integral: $z_{\mathrm{malt}}=0$ and $z_{\mathrm{mash}}=1$. The achieved colour is $\EBC=29.000$.
+
+\begin{table}[!t]
+\renewcommand{\arraystretch}{1.15}
+\caption{Task 3 LP Relaxation Result}
+\label{tab:task33-relaxation}
+\centering
+\small
+\begin{tabular}{@{}ll@{}}
+\toprule
+Item & Result \\
+\midrule
+Cost & 4497.687 \\
+$z_{\mathrm{malt}}$ & 0 \\
+$z_{\mathrm{mash}}$ & 1 \\
+Achieved EBC & 29.000 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[!t]
+\renewcommand{\arraystretch}{1.15}
+\caption{Task 3 Non-Zero Ingredients in the Relaxed Solution}
+\label{tab:task33-relaxation-ingredients}
+\centering
+\small
+\begin{tabular}{@{}llr@{}}
+\toprule
+Group & Variable & Amount (kg) \\
+\midrule
+Malt & \texttt{malt04} & 685.349 \\
+Malt & \texttt{malt06} & 268.598 \\
+Hops & \texttt{hop07} & 6.842 \\
+Yeast & \texttt{yeast05} & 3.750 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Why Most Ingredients Are Unused}
+\label{sec:task3-unused}
+Most ingredients are unused because an LP optimum usually occurs at a corner point of the feasible region. The solver selects the cheapest combination that satisfies the active volume and colour constraints. Ingredients that are more expensive or have less useful EBC values receive zero mass.
+
+\subsection{Rounded Relaxation}
+\label{sec:task3-rounded}
+The rounding step is applied only to the binary process variables. The relaxed solution gives $(z_{\mathrm{malt}},z_{\mathrm{mash}})=(0,1)$, so the rounded process choice is also $(0,1)$. The continuous LP is then re-solved with that process choice fixed. Directly rounding all ingredient quantities would be incorrect because ingredient amounts are continuous production decisions.
+
+\begin{table}[!t]
+\renewcommand{\arraystretch}{1.15}
+\caption{Task 3 Rounded-Process Re-Solve}
+\label{tab:task33-rounded}
+\centering
+\small
+\begin{tabular}{@{}ll@{}}
+\toprule
+Item & Result \\
+\midrule
+Rounded process choice & $(0,1)$ \\
+Re-solved cost & 4497.687 \\
+Achieved EBC & 29.000 \\
+Ingredient mix & same as Table~\ref{tab:task33-relaxation-ingredients} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Original MILP Result}
+\label{sec:task3-milp}
+The brute-force MILP solve checks the valid process choices $(0,0)$, $(0,1)$, and $(1,1)$. The optimal process choice is $(0,1)$, with total cost 4497.687 and achieved $\EBC=29.000$.
+
+\begin{table}[!t]
+\renewcommand{\arraystretch}{1.15}
+\caption{Task 3 Original MILP Result}
+\label{tab:task33-milp}
+\centering
+\small
+\begin{tabular}{@{}ll@{}}
+\toprule
+Item & Result \\
+\midrule
+Selected process choice & $(0,1)$ \\
+Total cost & 4497.687 \\
+Achieved EBC & 29.000 \\
+Ingredient mix & same as Table~\ref{tab:task33-relaxation-ingredients} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+% Values in this section come from task_33.ipynb.

@@ -1,0 +1,57 @@
+%% main.tex
+%% Overleaf root file.
+%% Upload this file together with Rapport/, bilder/, and References.bib.
+
+\documentclass[journal]{IEEEtran}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{url}
+
+\graphicspath{{bilder/}}
+\hyphenation{op-ti-mi-sa-tion Brew-ery Plat-Eau malt-ex-tract}
+
+\newcommand{\Vbeer}{V_{\mathrm{beer}}}
+\newcommand{\Vwort}{V_{\mathrm{wort}}}
+\newcommand{\Mtot}{M_{\mathrm{tot}}}
+\newcommand{\EBC}{\mathrm{EBC}}
+\newcommand{\Qmin}{Q_{\min}}
+\newcommand{\kg}{\mathrm{kg}}
+\newcommand{\litre}{\mathrm{L}}
+\renewcommand{\thesection}{\arabic{section}}
+\renewcommand{\thesubsection}{\thesection.\arabic{subsection}}
+\renewcommand{\thesubsubsection}{\thesubsection.\arabic{subsubsection}}
+
+\begin{document}
+
+\title{Brewery Plat-Eau: Project Answers for Beer Production Optimisation}
+
+\author{Henrik%
+\thanks{Optimisation Techniques project report.}}
+
+\markboth{Optimisation Techniques Project Answers, Brewery Plat-Eau}%
+{Brewery Plat-Eau: Optimisation of Beer Production}
+
+\maketitle
+
+\input{Rapport/01_introduction}
+\input{Rapport/02_brewing_model_and_data}
+\input{Rapport/03_mathematical_formulation}
+\input{Rapport/tasks/task_31_first_analysis}
+\input{Rapport/tasks/task_32_linear_program}
+\input{Rapport/tasks/task_33_amber_5000}
+\input{Rapport/tasks/task_34_less_or_more}
+\input{Rapport/tasks/task_35_quality_constraints}
+\input{Rapport/tasks/task_36_colors}
+\input{Rapport/tasks/task_37_maximise_quality}
+\input{Rapport/07_conclusion}
+\input{Rapport/08_appendix}
+
+\nocite{assignment,scipy}
+\bibliographystyle{IEEEtran}
+\bibliography{References}
+
+\end{document}

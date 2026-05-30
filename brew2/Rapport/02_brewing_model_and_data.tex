@@ -1,0 +1,34 @@
+\section{Problem Background and Brewing Assumptions}
+\label{sec:background}
+
+Only the brewing assumptions needed for the optimisation model are used. The fermentable material can be supplied through three routes: raw barley, purchased malt, and malt extract. Raw barley must first be converted to malt and then mashed. Purchased malt skips malting but still requires mashing. Malt extract is already in extract-equivalent form and can be used directly.
+
+The final beer volume is related to wort volume by
+\begin{equation}
+  \Vbeer = 0.95\Vwort,
+  \label{eq:beer-wort}
+\end{equation}
+so that $\Vwort=\Vbeer/0.95$. The required malt-extract-equivalent mass is
+\begin{equation}
+  \frac{\Mtot}{\Vwort}=2.9(SG-1), \qquad SG=1.050.
+  \label{eq:extract-ratio}
+\end{equation}
+
+The conversion rules for fermentable sources are
+\begin{align}
+  1~\kg\ \mathrm{barley} &= 0.75~\kg\ \mathrm{malt}, \label{eq:barley-to-malt}\\
+  1~\kg\ \mathrm{malt} &= 0.8~\kg\ \mathrm{malt\ extract\ equivalent}. \label{eq:malt-to-extract}
+\end{align}
+Therefore,
+\begin{equation}
+  1~\kg\ \mathrm{barley}=0.6~\kg\ \mathrm{malt\ extract\ equivalent}.
+  \label{eq:barley-to-extract}
+\end{equation}
+
+Hops are required in proportion to wort volume, and yeast is required in proportion to final beer volume:
+\begin{align}
+  M_{\mathrm{hops}} &= 0.0013\Vwort, \label{eq:hops}\\
+  M_{\mathrm{yeast}} &= 0.00075\Vbeer. \label{eq:yeast}
+\end{align}
+
+Beer colour is measured by EBC. Each colour class is represented by lower and upper EBC bounds, except black beer, which has only a lower bound. Quality is modelled as a weighted average within each ingredient group. All ingredient costs, EBC values, quality values, and process costs are read from \texttt{dataset\_EN.txt}.

@@ -1,0 +1,44 @@
+\section{Problem Background and Brewing Assumptions}
+\label{sec:background}
+Only the brewing assumptions needed for the optimisation model are used. The fermentable material can be supplied through three routes. Raw barley is first converted to malt and then mashed. Purchased malt skips the malting step but still requires mashing. Malt extract is already in malt-extract-equivalent form and can be used directly.
+
+The final beer volume is related to wort volume by
+\begin{equation}
+  \Vbeer = 0.95 \Vwort,
+  \label{eq:beer-wort}
+\end{equation}
+so that a requested beer volume implies
+\begin{equation}
+  \Vwort = \frac{\Vbeer}{0.95}.
+  \label{eq:wort-from-beer}
+\end{equation}
+The required malt-extract-equivalent mass is
+\begin{equation}
+  \frac{\Mtot}{\Vwort} = 2.9(SG - 1), \qquad SG = 1.050.
+  \label{eq:extract-ratio}
+\end{equation}
+Therefore
+\begin{equation}
+  \Mtot = 2.9(1.050 - 1)\Vwort.
+  \label{eq:extract-total}
+\end{equation}
+
+Barley and malt conversion are
+\begin{align}
+  1~\kg\ \mathrm{barley} &= 0.75~\kg\ \mathrm{malt}, \label{eq:barley-to-malt}\\
+  1~\kg\ \mathrm{malt} &= 0.8~\kg\ \mathrm{malt\ extract\ equivalent}. \label{eq:malt-to-extract}
+\end{align}
+Consequently,
+\begin{equation}
+  1~\kg\ \mathrm{barley} = 0.6~\kg\ \mathrm{malt\ extract\ equivalent}.
+  \label{eq:barley-to-extract}
+\end{equation}
+Hops are required in proportion to wort volume, and yeast is required in proportion to final beer volume:
+\begin{align}
+  M_{\mathrm{hops}} &= 0.0013 \Vwort, \label{eq:hops}\\
+  M_{\mathrm{yeast}} &= 0.00075 \Vbeer. \label{eq:yeast}
+\end{align}
+
+Beer colour is measured by EBC. Each beer colour in the assignment is represented by a lower and, except for black beer, an upper EBC bound. Quality is treated as a weighted average inside each ingredient group. Therefore, quality requirements can be written as linear weighted-average constraints once the total amount of each group is fixed.
+
+All ingredient costs, EBC values, qualities, and process costs are read from \texttt{dataset\_EN.txt}. The Python code keeps the dataset as the single input source for the numerical tasks.

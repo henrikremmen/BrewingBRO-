@@ -1,0 +1,29 @@
+\section{Task 2: LP and MILP Formulation}
+\label{sec:task2}
+This section answers assignment Task 3.2. The full mathematical model is given once in Section~\ref{sec:model}; this task explains how it is used computationally.
+
+\subsection{MILP Formulation}
+\label{sec:task2-milp}
+The model is a mixed-integer linear program because all balances, colour constraints, quality constraints, and process-linking constraints are linear, while $z_{\mathrm{malt}}$ and $z_{\mathrm{mash}}$ are binary. The two binary variables determine whether fixed malting and mashing costs are charged.
+
+\subsection{LP Relaxation}
+\label{sec:task2-relaxation}
+The relaxed model uses the same equations as the MILP but replaces the binary restrictions by
+\begin{equation}
+  0 \leq z_{\mathrm{malt}}, z_{\mathrm{mash}} \leq 1.
+\end{equation}
+For cost minimisation, this gives a lower bound on the MILP optimum. A relaxed solution may contain fractional process variables, so it is not necessarily a valid production plan.
+
+\subsection{Brute-Force Method}
+\label{sec:task2-bruteforce}
+Enumerating the binary variables is exact in this project because there are only two process choices and only three valid combinations:
+\[
+(z_{\mathrm{malt}},z_{\mathrm{mash}})\in\{(0,0),(0,1),(1,1)\}.
+\]
+For each combination, the binary variables are fixed and the remaining continuous LP is solved. The best feasible solution among these LPs is the original MILP solution.
+
+\subsection{Programmatic Implementation}
+\label{sec:task2-implementation}
+The model was implemented in Python using the assignment input data. For each problem instance, the program constructs the objective vector, equality constraints, inequality constraints, right-hand sides, and variable bounds for the LP. The LP subproblems are solved with \texttt{scipy.optimize.linprog}. No advanced MILP solver is used; the binary process choices are handled by brute-force enumeration. Result tables report only non-zero decision variables rather than the full optimisation vector.
+
+% task_32.ipynb contains the matrix-building implementation and the demonstration solve.

@@ -1,0 +1,77 @@
+\section{Task 7: Maximising the Quality}
+\label{sec:task7}
+
+\subsection{New Objective}
+\label{sec:task7-objective}
+To maximise quality, introduce a scalar variable $q$ representing the minimum achieved quality over the malt-source, hop, and yeast groups. The objective is
+\begin{equation}
+  \max q,
+  \label{eq:max-quality-objective}
+\end{equation}
+or equivalently $\min -q$ in minimisation form.
+
+\subsection{Quality Constraints}
+\label{sec:task7-constraints}
+The volume, colour, and process constraints remain active. For the 5000 L amber problem, the required totals are fixed constants:
+\begin{equation}
+  \Mtot = 763.158~\kg,\qquad
+  H_{\mathrm{req}} = 6.842~\kg,\qquad
+  Y_{\mathrm{req}} = 3.750~\kg.
+\end{equation}
+The three group-quality constraints are therefore linear when rewritten with $q$ as the lower bound:
+\begin{align}
+  \sum_{i \in B} Q^B_i(0.6b_i)
+  +\sum_{i \in M} Q^M_i(0.8m_i)
+  +\sum_{i \in E} Q^E_i e_i
+  &\geq q\Mtot, \label{eq:q-source}\\
+  \sum_{i \in H} Q^H_i h_i
+  &\geq qH_{\mathrm{req}}, \label{eq:q-hop}\\
+  \sum_{i \in Y} Q^Y_i y_i
+  &\geq qY_{\mathrm{req}}. \label{eq:q-yeast}
+\end{align}
+The terms $q\Mtot$, $qH_{\mathrm{req}}$, and $qY_{\mathrm{req}}$ are products of $q$ with constants, not products of decision variables. The bound $0\leq q\leq5$ is added. The model remains a MILP because $q$ is continuous and the only integer variables are still the two process variables handled by the same brute-force enumeration as in Section~\ref{sec:relaxation-bruteforce}.
+
+\subsection{Can the Minimum Quality Be 5?}
+\label{sec:task7-quality5}
+Yes. The optimisation reaches $q^\star=5.000$, so minimum quality 5 is feasible. Since 5 is also the upper bound on $q$, this is the best possible value. No ingredient group prevents quality 5 in the computed solution: the malt-source, hop, and yeast qualities all reach 5 while satisfying the amber colour constraint.
+
+\begin{table}[H]
+\renewcommand{\arraystretch}{1.15}
+\caption{Task 7 Quality Maximisation Result}
+\label{tab:task37-quality}
+\centering
+\small
+\begin{tabular}{@{}ll@{}}
+\toprule
+Item & Result \\
+\midrule
+Maximum minimum quality & 5.000 \\
+Quality 5 feasible? & yes \\
+Process choice & $(0,1)$ \\
+Achieved EBC & 20.000 \\
+Malt-source quality & 5.000 \\
+Hop quality & 5.000 \\
+Yeast quality & 5.000 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\renewcommand{\arraystretch}{1.15}
+\caption{Task 7 Non-Zero Ingredients}
+\label{tab:task37-ingredients}
+\centering
+\small
+\begin{tabular}{@{}llr@{}}
+\toprule
+Group & Variable & Amount (kg) \\
+\midrule
+Malt & \texttt{malt11} & 870.772 \\
+Malt extract & \texttt{maltextract03} & 66.541 \\
+Hops & \texttt{hop10} & 6.842 \\
+Yeast & \texttt{yeast01} & 3.750 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+% Values in this section come from task_37.ipynb.

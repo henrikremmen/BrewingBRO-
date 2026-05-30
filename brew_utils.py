@@ -99,6 +99,10 @@ HOPS_KG_PER_L_WORT = HOPS_G_PER_L_WORT / 1000.0
 YEAST_G_PER_100L_BEER = 75.0
 YEAST_KG_PER_L_BEER = YEAST_G_PER_100L_BEER / 1000.0 / 100.0   # 0.00075 kg/L
 
+# The assignment defines black as EBC > 120.
+# LP solvers cannot model strict inequalities, so we use a small epsilon.
+EBC_EPSILON = 1e-6
+
 # Beer color classes
 EBC_RANGES = {
     "light blond": (6, 8),
@@ -108,7 +112,7 @@ EBC_RANGES = {
     "copper": (30, 45),
     "brown": (46, 75),
     "dark brown": (76, 120),
-    "black": (120, np.inf),
+    "black": (120 + EBC_EPSILON, np.inf),
 }
 
 
@@ -276,4 +280,3 @@ def cheapest_cost(df, cost_col="cost"):
     Return the minimum cost value in a dataframe.
     """
     return float(df[cost_col].min())
-

@@ -1,0 +1,152 @@
+\section{Model Setup}
+\label{sec:model}
+
+\subsection{Decision Variables}
+\label{sec:decision-variables}
+Let $B$, $M$, $E$, $H$, and $Y$ denote the sets of barley, malt, malt-extract, hop, and yeast alternatives. The continuous decision variables are
+\begin{align*}
+  b_i &\geq 0 && i \in B, && \text{kg of barley } i,\\
+  m_i &\geq 0 && i \in M, && \text{kg of malt } i,\\
+  e_i &\geq 0 && i \in E, && \text{kg extract-equivalent of extract } i,\\
+  h_i &\geq 0 && i \in H, && \text{kg of hops } i,\\
+  y_i &\geq 0 && i \in Y, && \text{kg of yeast } i.
+\end{align*}
+The binary process variables are
+\begin{align*}
+  z_{\mathrm{malt}} &\in \{0,1\}, && \text{1 if malting is used},\\
+  z_{\mathrm{mash}} &\in \{0,1\}, && \text{1 if mashing is used}.
+\end{align*}
+
+For compact notation, the extract-equivalent coefficients are
+\begin{equation}
+  a^B = 0.6,\qquad a^M = 0.8,\qquad a^E = 1.
+  \label{eq:extract-coefficients}
+\end{equation}
+
+\subsection{Objective Function}
+\label{sec:objective}
+The cost-minimisation objective includes ingredient costs, variable process costs, and fixed process costs:
+\begin{align}
+\min\ C ={}&
+  \sum_{i \in B} c^B_i b_i
+  + \sum_{i \in M} c^M_i m_i
+  + \sum_{i \in E} c^E_i e_i \notag\\
+& + \sum_{i \in H} c^H_i h_i
+  + \sum_{i \in Y} c^Y_i y_i \notag\\
+& + v_{\mathrm{malt}}\sum_{i \in B} b_i
+  + v_{\mathrm{mash}}\left(0.75\sum_{i \in B}b_i+\sum_{i \in M}m_i\right) \notag\\
+& + F_{\mathrm{malt}}z_{\mathrm{malt}}
+  + F_{\mathrm{mash}}z_{\mathrm{mash}}.
+  \label{eq:objective-cost}
+\end{align}
+Here $F$ denotes fixed process costs and $v$ denotes variable process costs from the dataset.
+
+\subsection{Volume Constraints}
+\label{sec:volume-constraints}
+For a requested final beer volume $\Vbeer$, the required wort volume and malt-extract-equivalent mass are
+\begin{align}
+  \Vwort &= \frac{\Vbeer}{0.95}, \label{eq:model-wort-from-beer}\\
+  \Mtot &= 2.9(1.050-1)\Vwort. \label{eq:model-extract-total}
+\end{align}
+The fermentable-source balance is
+\begin{equation}
+  0.6\sum_{i \in B}b_i
+  +0.8\sum_{i \in M}m_i
+  +\sum_{i \in E}e_i
+  = \Mtot.
+  \label{eq:malt-source-balance}
+\end{equation}
+The hop and yeast balances are
+\begin{align}
+  \sum_{i \in H}h_i &= 0.0013 \Vwort, \label{eq:hop-balance}\\
+  \sum_{i \in Y}y_i &= 0.00075 \Vbeer. \label{eq:yeast-balance}
+\end{align}
+
+\subsection{Colour Constraints}
+\label{sec:colour-constraints}
+The EBC formula is a weighted average over fermentable sources. Barley and malt are first converted to malt-extract-equivalent mass before the EBC average is formed. Define
+\begin{equation}
+  \gamma = \frac{SG-1}{0.0344}
+  \label{eq:gamma}
+\end{equation}
+and the weighted colour contribution
+\begin{align}
+  \Phi_E ={}&
+    \sum_{i \in B} E^B_i(0.6b_i)
+    +\sum_{i \in M} E^M_i(0.8m_i) \notag\\
+  &+\sum_{i \in E} E^E_i e_i.
+  \label{eq:ebc-contribution}
+\end{align}
+Then
+\begin{equation}
+  \EBC = \gamma\frac{\Phi_E}{\Mtot}.
+  \label{eq:ebc-average}
+\end{equation}
+For a colour interval $[\EBC_{\min},\EBC_{\max}]$, this becomes the pair of linear bounds
+\begin{align}
+  \gamma\Phi_E &\geq \EBC_{\min}\Mtot, \label{eq:ebc-lower}\\
+  \gamma\Phi_E &\leq \EBC_{\max}\Mtot. \label{eq:ebc-upper}
+\end{align}
+The assignment defines black beer as $\EBC>120$. Since strict inequalities cannot be represented directly by an LP solver, the implementation uses
+\begin{equation}
+  \EBC \geq 120+\epsilon_{\EBC}, \qquad \epsilon_{\EBC}=10^{-6},
+  \label{eq:black-epsilon}
+\end{equation}
+and omits the upper EBC constraint when $\EBC_{\max}=\infty$.
+
+\subsection{Quality Constraints}
+\label{sec:quality-constraints}
+Quality requirements are weighted averages rewritten as linear inequalities. For fermentable sources,
+\begin{equation}
+  \sum_{i \in B} Q^B_i(0.6b_i)
+  +\sum_{i \in M} Q^M_i(0.8m_i)
+  +\sum_{i \in E} Q^E_i e_i
+  \geq Q^S_{\min}\Mtot.
+  \label{eq:quality-source}
+\end{equation}
+For hops and yeast,
+\begin{align}
+  \sum_{i \in H} Q^H_i h_i
+  &\geq Q^H_{\min}\sum_{i \in H}h_i, \label{eq:quality-hop}\\
+  \sum_{i \in Y} Q^Y_i y_i
+  &\geq Q^Y_{\min}\sum_{i \in Y}y_i. \label{eq:quality-yeast}
+\end{align}
+
+\subsection{Process Constraints}
+\label{sec:process-constraints}
+Big-M constraints link ingredient use to the fixed-cost process variables. Barley requires malting, barley and purchased malt require mashing, and malting implies mashing:
+\begin{align}
+  \sum_{i \in B} b_i
+  &\leq M_{\mathrm{malt}} z_{\mathrm{malt}}, \label{eq:link-malt}\\
+  0.75\sum_{i \in B} b_i+\sum_{i \in M}m_i
+  &\leq M_{\mathrm{mash}} z_{\mathrm{mash}}, \label{eq:link-mash}\\
+  z_{\mathrm{malt}} &\leq z_{\mathrm{mash}}. \label{eq:link-logical}
+\end{align}
+The implementation uses
+\begin{equation}
+  M_{\mathrm{malt}}=\frac{\Mtot}{0.6},\qquad
+  M_{\mathrm{mash}}=\frac{\Mtot}{0.8},
+  \label{eq:bigm-values}
+\end{equation}
+which are large enough to allow all-barley or all-malt solutions.
+
+\subsection{LP Relaxation and Brute-Force Solution}
+\label{sec:relaxation-bruteforce}
+The LP relaxation replaces the binary conditions
+\begin{equation}
+  z_{\mathrm{malt}}, z_{\mathrm{mash}} \in \{0,1\}
+\end{equation}
+with continuous bounds
+\begin{equation}
+  0 \leq z_{\mathrm{malt}}, z_{\mathrm{mash}} \leq 1.
+  \label{eq:relaxation}
+\end{equation}
+The relaxation gives a lower bound for cost minimisation, but fractional process variables are not valid production decisions.
+
+The original MILP is solved by brute force over the valid binary process choices
+\begin{equation}
+  (z_{\mathrm{malt}},z_{\mathrm{mash}})
+  \in\{(0,0),(0,1),(1,1)\}.
+  \label{eq:bruteforce-set}
+\end{equation}
+For each fixed process choice, one LP is solved using \texttt{scipy.optimize.linprog}. Since the model has only two binary variables, this enumeration is exact and does not require a dedicated MILP solver.

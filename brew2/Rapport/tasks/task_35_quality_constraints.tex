@@ -1,0 +1,79 @@
+\section{Task 5: Full Problem with Quality Constraints}
+\label{sec:task5}
+
+\subsection{Problem Setup}
+\label{sec:task5-setup}
+This task uses the same production volume and colour as Task 3, but adds minimum average quality constraints. The setup is 5000 L amber beer with
+\[
+Q^S_{\min}=3,\qquad Q^H_{\min}=3,\qquad Q^Y_{\min}=3.
+\]
+
+\begin{table}[H]
+\renewcommand{\arraystretch}{1.15}
+\caption{Task 5 Problem Setup}
+\label{tab:task35-setup}
+\centering
+\small
+\begin{tabular}{@{}ll@{}}
+\toprule
+Parameter & Value \\
+\midrule
+Beer volume & 5000 L \\
+Colour & amber \\
+EBC bounds & 20 to 29 \\
+Malt-source quality & at least 3 \\
+Hop quality & at least 3 \\
+Yeast quality & at least 3 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Optimal Solution}
+\label{sec:task5-solution}
+The optimal quality-constrained solution uses process choice $(z_{\mathrm{malt}},z_{\mathrm{mash}})=(0,1)$. The total cost is 4891.923 and the achieved EBC is 20.000. All three achieved group qualities are 3.000.
+
+\begin{table}[H]
+\renewcommand{\arraystretch}{1.15}
+\caption{Task 5 Optimal Solution Summary}
+\label{tab:task35-solution}
+\centering
+\small
+\begin{tabular}{@{}ll@{}}
+\toprule
+Item & Result \\
+\midrule
+Total cost & 4891.923 \\
+Process choice & $(0,1)$ \\
+Achieved EBC & 20.000 \\
+Malt-source quality & 3.000 \\
+Hop quality & 3.000 \\
+Yeast quality & 3.000 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\renewcommand{\arraystretch}{1.15}
+\caption{Task 5 Non-Zero Ingredients}
+\label{tab:task35-ingredients}
+\centering
+\small
+\begin{tabular}{@{}llr@{}}
+\toprule
+Group & Variable & Amount (kg) \\
+\midrule
+Malt & \texttt{malt03} & 901.457 \\
+Malt & \texttt{malt06} & 17.497 \\
+Malt & \texttt{malt12} & 34.994 \\
+Hops & \texttt{hop07} & 3.421 \\
+Hops & \texttt{hop10} & 3.421 \\
+Yeast & \texttt{yeast03} & 3.750 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Comparison with Task 3}
+\label{sec:task5-comparison}
+The quality constraints increase the cost from 4497.687 in Task 3 to 4891.923 in Task 5. This is expected because the feasible region becomes smaller. The model can no longer use only the cheapest low-quality combination from Task 3; it must choose ingredients whose weighted averages satisfy the three quality lower bounds. The optimal EBC also moves from the upper amber boundary in Task 3 to the lower amber boundary in Task 5.
+
+% Values in this section come from task_35.ipynb.
